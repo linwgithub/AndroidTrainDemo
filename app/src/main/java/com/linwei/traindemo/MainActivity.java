@@ -7,12 +7,12 @@ import android.widget.TextView;
 
 import com.linwei.traindemo.utils.StatusBarHelper;
 import com.linwei.traindemo.utils.Utils;
-import com.linwei.traindemo.widget.ProcessView;
+import com.linwei.traindemo.widget.AnimateProcessView;
 
 public class MainActivity extends AppCompatActivity {
 
     TextView tvMain;
-    ProcessView processView;
+    AnimateProcessView animateProcessView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,12 +27,12 @@ public class MainActivity extends AppCompatActivity {
             tvMain.setText("Not Chinese");
         }
 
-        processView = (ProcessView) findViewById(R.id.view_process);
+        animateProcessView = (AnimateProcessView) findViewById(R.id.view_process);
         findViewById(R.id.btn_main).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                processView.setBitmap(R.drawable.green_bar);
-                processView.setProcess(1.0f, true);
+                animateProcessView.setmDoneBitmap(R.drawable.green_bar);
+                animateProcessView.setProcess(1.0f, true, 800);
             }
         });
     }

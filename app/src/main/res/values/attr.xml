@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <declare-styleable name="ProcessView">
+    <declare-styleable name="AnimateProcessView">
 
         <attr name="bgColor" format="color"/>
         <attr name="process" format="float"/>
         <attr name="processSrc" format="reference"/>
         <attr name="isAnime" format="boolean"/>
+        <attr name="animatrDuration" format="integer"/>
     </declare-styleable>
 </resources>

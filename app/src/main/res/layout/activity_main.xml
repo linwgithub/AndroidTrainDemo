@@ -25,13 +25,14 @@
         android:layout_height="wrap_content"
         android:text="开始动画" />
 
-    <com.linwei.traindemo.widget.ProcessView
+    <com.linwei.traindemo.widget.AnimateProcessView
         android:id="@+id/view_process"
         android:layout_width="match_parent"
         android:layout_height="32dp"
         android:layout_marginLeft="32dp"
         android:layout_marginRight="32dp"
         app:process="0.6"
-        app:isAnime="false"
+        app:isAnime="true"
+        app:animatrDuration="0"
         app:processSrc="@drawable/bule_bar" />
 </LinearLayout>
