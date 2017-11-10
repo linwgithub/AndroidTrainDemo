@@ -28,10 +28,12 @@ public class AnimateProcessView extends View {
     private int mWidth, mHeight;
     private int mDoneViewWitdh = 0;
     private int mBgColor = Color.parseColor("#e3e3e3");
+    private int mTextColor = Color.parseColor("#e3e3e3");
     private Paint mPaint = new Paint();
     private Bitmap mDoneBitmap = null;
     private float mProcess = 0f;
     private boolean mIsAnimte = true;
+    private boolean mShowProcessText = true;
     private long mAnimteDuration = 1000;
 
     public AnimateProcessView(Context context) {
@@ -50,22 +52,18 @@ public class AnimateProcessView extends View {
 
     private void initAttr(Context context, AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.AnimateProcessView);
-        if (typedArray.hasValue(R.styleable.AnimateProcessView_bgColor)) {
-            mBgColor = typedArray.getColor(R.styleable.AnimateProcessView_bgColor, Color.parseColor("#e3e3e3"));
-        }
-        if (typedArray.hasValue(R.styleable.AnimateProcessView_processSrc)) {
-            int bitmapSrc = typedArray.getResourceId(R.styleable.AnimateProcessView_processSrc, 0);
-            if (bitmapSrc != 0) {
-                mDoneBitmap = BitmapFactory.decodeResource(getResources(), bitmapSrc);
-            }
-        }
-        if (typedArray.hasValue(R.styleable.AnimateProcessView_process)) {
-            mProcess = typedArray.getFloat(R.styleable.AnimateProcessView_process, 0f);
+        mBgColor = typedArray.getColor(R.styleable.AnimateProcessView_bgColor, Color.parseColor("#e3e3e3"));
+        mTextColor = typedArray.getColor(R.styleable.AnimateProcessView_processTextColor, Color.parseColor("#e3e3e3"));
+
+        int bitmapSrc = typedArray.getResourceId(R.styleable.AnimateProcessView_processSrc, 0);
+        if (bitmapSrc != 0) {
+            mDoneBitmap = BitmapFactory.decodeResource(getResources(), bitmapSrc);
         }
 
-        if (typedArray.hasValue(R.styleable.AnimateProcessView_animatrDuration)) {
-            mAnimteDuration = typedArray.getInt(R.styleable.AnimateProcessView_animatrDuration, 1000);
-        }
+        mProcess = typedArray.getFloat(R.styleable.AnimateProcessView_process, 0f);
+        mAnimteDuration = typedArray.getInt(R.styleable.AnimateProcessView_animatrDuration, 1000);
+        mIsAnimte = typedArray.getBoolean(R.styleable.AnimateProcessView_isAnimete, true);
+        mShowProcessText = typedArray.getBoolean(R.styleable.AnimateProcessView_isShowProcessText, true);
     }
 
 
@@ -87,20 +85,48 @@ public class AnimateProcessView extends View {
             mProcess = 0;
             return;
         }
-        int radius = mHeight / 2;
+
+        int processBarHeight = mHeight;
+
+        if (mShowProcessText) {
+
+            processBarHeight = mHeight / 2;
+
+            Paint textPaint = new Paint();
+            textPaint.setColor(mTextColor);
+            textPaint.setTextSize((float) (mHeight * 0.4));
+            String text = (int) ((float) mDoneViewWitdh * 100 / mWidth) + "%";
+            float measureTextSize = textPaint.measureText(text, 0, text.length());
+            if ((mDoneViewWitdh + measureTextSize) <= mWidth) {
+                if (mDoneViewWitdh > measureTextSize / 2) {
+                    canvas.drawText(text, mDoneViewWitdh - measureTextSize / 2, (float) (mHeight * 0.98), textPaint);
+                } else {
+                    canvas.drawText(text, mDoneViewWitdh, (float) (mHeight * 0.98), textPaint);
+                }
+            } else {
+                canvas.drawText(text, mWidth - measureTextSize, (float) (mHeight * 0.98), textPaint);
+            }
+        }
+
+        int radius = processBarHeight / 2;
+
 
         mPaint.setColor(mBgColor);
 
         Path pathBg = new Path();
-        RectF rectFBg = new RectF(0, 0, mWidth, mHeight);
+        RectF rectFBg = new RectF(0, 0, mWidth, processBarHeight);
         pathBg.addRoundRect(rectFBg, radius, radius, Path.Direction.CCW);
         canvas.clipPath(pathBg);
 
         if (mDoneBitmap == null) {
             mDoneBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.bule_bar);
         }
+
         Rect srcRect = new Rect(0, 0, mDoneBitmap.getWidth(), mDoneBitmap.getHeight());
-        Rect dirRect = new Rect(0, 0, mWidth, mHeight);
+        Rect dirRect = new Rect(0, 0, mWidth, processBarHeight);
+
+//        Rect srcRect = new Rect((int) (mDoneBitmap.getWidth() * (1- ((float)mDoneViewWitdh / mWidth))), 0, mDoneBitmap.getWidth(), mDoneBitmap.getHeight());
+//        Rect dirRect = new Rect(0, 0, mDoneViewWitdh, processBarHeight);
 
         canvas.drawBitmap(mDoneBitmap, srcRect, dirRect, mPaint);
 
@@ -108,30 +134,31 @@ public class AnimateProcessView extends View {
         Path pathBitmap = new Path();
 
         if (mDoneViewWitdh < radius) {
-            pathBitmap.addRect(new RectF(0, 0, mDoneViewWitdh, mHeight), Path.Direction.CW);
-            pathBg.op(pathBitmap, Path.Op.DIFFERENCE);
-        } else if ((mDoneViewWitdh >= radius) && (mDoneViewWitdh <= mHeight)) {
+            pathBitmap.addRect(new RectF(0, 0, mDoneViewWitdh, processBarHeight), Path.Direction.CW);
+        } else if ((mDoneViewWitdh >= radius) && (mDoneViewWitdh <= processBarHeight)) {
 
-            pathBitmap.addArc(new RectF(0, 0, mHeight, mHeight), 90, 180);
+            pathBitmap.addArc(new RectF(0, 0, processBarHeight, processBarHeight), 90, 180);
             pathBitmap.close();
 
             Path fillCircleLeft = new Path();
             fillCircleLeft.moveTo(radius, 0);
-            fillCircleLeft.quadTo(mDoneViewWitdh, radius, radius, mHeight);
+            fillCircleLeft.quadTo(mDoneViewWitdh, radius, radius, processBarHeight);
             fillCircleLeft.close();
             pathBitmap.op(fillCircleLeft, Path.Op.UNION);
-            pathBg.op(pathBitmap, Path.Op.DIFFERENCE);
 
         } else {
-
-            pathBitmap.addRoundRect(new RectF(0, 0, mDoneViewWitdh, mHeight), radius, radius, Path.Direction.CW);
-            pathBg.op(pathBitmap, Path.Op.DIFFERENCE);
+            pathBitmap.addRoundRect(new RectF(0, 0, mDoneViewWitdh, processBarHeight), radius, radius, Path.Direction.CW);
         }
+        pathBg.op(pathBitmap, Path.Op.DIFFERENCE);
         canvas.drawPath(pathBg, mPaint);
     }
 
     public void setmDoneBitmap(int bitmapSrc) {
         mDoneBitmap = BitmapFactory.decodeResource(getResources(), bitmapSrc);
+    }
+
+    public void setShowProcessText(boolean showProcessText){
+        this.mShowProcessText = showProcessText;
     }
 
     public void setProcess(float process, boolean isAnimate, long duration) {
@@ -170,7 +197,7 @@ public class AnimateProcessView extends View {
                 invalidate();
             }
         });
-        valueAnimator.setDuration((long) (1000 * process));
+        valueAnimator.setDuration(mAnimteDuration);
         valueAnimator.start();
     }
 

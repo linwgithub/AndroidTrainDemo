@@ -31,8 +31,9 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.btn_main).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                animateProcessView.setShowProcessText(false);
                 animateProcessView.setmDoneBitmap(R.drawable.green_bar);
-                animateProcessView.setProcess(1.0f, true, 800);
+                animateProcessView.setProcess(1.0f, true, 2400);
             }
         });
     }
