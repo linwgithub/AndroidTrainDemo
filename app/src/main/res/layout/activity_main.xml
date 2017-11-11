@@ -33,7 +33,7 @@
         android:layout_marginRight="32dp"
         app:process="0.6"
         app:isAnimete="false"
-        app:isShowProcessText="true"
+        app:isShowProcessText="false"
         app:animatrDuration="0"
         app:processTextColor="@color/colorAccent"
         app:processSrc="@drawable/bule_bar" />

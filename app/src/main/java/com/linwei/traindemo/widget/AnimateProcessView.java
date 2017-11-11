@@ -133,32 +133,14 @@ public class AnimateProcessView extends View {
 
         Path pathBitmap = new Path();
 
-        if (mDoneViewWitdh < radius) {
-            pathBitmap.addRect(new RectF(0, 0, mDoneViewWitdh, processBarHeight), Path.Direction.CW);
-        } else if ((mDoneViewWitdh >= radius) && (mDoneViewWitdh <= processBarHeight)) {
-
-            pathBitmap.addArc(new RectF(0, 0, processBarHeight, processBarHeight), 90, 180);
-            pathBitmap.close();
-
-            Path fillCircleLeft = new Path();
-            fillCircleLeft.moveTo(radius, 0);
-            fillCircleLeft.quadTo(mDoneViewWitdh, radius, radius, processBarHeight);
-            fillCircleLeft.close();
-            pathBitmap.op(fillCircleLeft, Path.Op.UNION);
+        if (mDoneViewWitdh <= processBarHeight) {
+            pathBitmap.addCircle(mDoneViewWitdh - radius, radius, radius, Path.Direction.CW);
 
         } else {
             pathBitmap.addRoundRect(new RectF(0, 0, mDoneViewWitdh, processBarHeight), radius, radius, Path.Direction.CW);
         }
         pathBg.op(pathBitmap, Path.Op.DIFFERENCE);
         canvas.drawPath(pathBg, mPaint);
-    }
-
-    public void setmDoneBitmap(int bitmapSrc) {
-        mDoneBitmap = BitmapFactory.decodeResource(getResources(), bitmapSrc);
-    }
-
-    public void setShowProcessText(boolean showProcessText){
-        this.mShowProcessText = showProcessText;
     }
 
     public void setProcess(float process, boolean isAnimate, long duration) {
@@ -201,4 +183,15 @@ public class AnimateProcessView extends View {
         valueAnimator.start();
     }
 
+    public void setmDoneBitmap(int bitmapSrc) {
+        mDoneBitmap = BitmapFactory.decodeResource(getResources(), bitmapSrc);
+    }
+
+    public void setTextColor(int color) {
+        mTextColor = color;
+    }
+
+    public void setShowProcessText(boolean showProcessText){
+        this.mShowProcessText = showProcessText;
+    }
 }
