@@ -27,6 +27,7 @@ public class AnimateProcessView extends View {
 
     private int mWidth, mHeight;
     private int mDoneViewWitdh = 0;
+    private int mBarColor = Color.parseColor("#000000");
     private int mBgColor = Color.parseColor("#e3e3e3");
     private int mTextColor = Color.parseColor("#e3e3e3");
     private Paint mPaint = new Paint();
@@ -119,16 +120,19 @@ public class AnimateProcessView extends View {
         canvas.clipPath(pathBg);
 
         if (mDoneBitmap == null) {
-            mDoneBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.bule_bar);
-        }
-
-        Rect srcRect = new Rect(0, 0, mDoneBitmap.getWidth(), mDoneBitmap.getHeight());
-        Rect dirRect = new Rect(0, 0, mWidth, processBarHeight);
+//            mDoneBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.bule_bar);
+            canvas.drawColor(mBarColor);
+        }else {
+            Rect srcRect = new Rect(0, 0, mDoneBitmap.getWidth(), mDoneBitmap.getHeight());
+            Rect dirRect = new Rect(0, 0, mWidth, processBarHeight);
 
 //        Rect srcRect = new Rect((int) (mDoneBitmap.getWidth() * (1- ((float)mDoneViewWitdh / mWidth))), 0, mDoneBitmap.getWidth(), mDoneBitmap.getHeight());
 //        Rect dirRect = new Rect(0, 0, mDoneViewWitdh, processBarHeight);
 
-        canvas.drawBitmap(mDoneBitmap, srcRect, dirRect, mPaint);
+            canvas.drawBitmap(mDoneBitmap, srcRect, dirRect, mPaint);
+        }
+
+
 
 
         Path pathBitmap = new Path();
@@ -140,6 +144,7 @@ public class AnimateProcessView extends View {
             pathBitmap.addRoundRect(new RectF(0, 0, mDoneViewWitdh, processBarHeight), radius, radius, Path.Direction.CW);
         }
         pathBg.op(pathBitmap, Path.Op.DIFFERENCE);
+//        canvas.clipPath(pathBg);
         canvas.drawPath(pathBg, mPaint);
     }
 
@@ -185,6 +190,10 @@ public class AnimateProcessView extends View {
 
     public void setmDoneBitmap(int bitmapSrc) {
         mDoneBitmap = BitmapFactory.decodeResource(getResources(), bitmapSrc);
+    }
+
+    public void setBarColor(int color){
+
     }
 
     public void setTextColor(int color) {

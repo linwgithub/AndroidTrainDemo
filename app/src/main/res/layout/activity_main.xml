@@ -37,4 +37,8 @@
         app:animatrDuration="0"
         app:processTextColor="@color/colorAccent"
         app:processSrc="@drawable/bule_bar" />
+
+    <com.linwei.traindemo.widget.CustomViewTrainPatin
+        android:layout_width="160dp"
+        android:layout_height="160dp" />
 </LinearLayout>
