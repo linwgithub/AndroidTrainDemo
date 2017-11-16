@@ -41,15 +41,15 @@ public class TrainPatin extends View {
         super.onDraw(canvas);
         canvas.translate(mWitdh / 2, mHeight / 2);
 
-        Paint paint = new Paint();
+        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setStrokeWidth(1);
+        paint.setAntiAlias(false);
         paint.setColor(Color.RED);
         canvas.drawLine(0, -mHeight / 2, 0, mHeight / 2, paint);
         canvas.drawLine(-mWitdh / 2, 0, mWitdh/2, 0, paint);
 
         paint.setColor(Color.GREEN);
         canvas.drawLine(-30, 0, -30, mHeight / 2, paint);
-
 
 
         paint.setStrokeWidth(60);
@@ -62,11 +62,14 @@ public class TrainPatin extends View {
         paint.setColor(Color.BLUE);
         paint.setStyle(Paint.Style.STROKE);
 
-        paint.setStrokeCap(Paint.Cap.BUTT);
-        canvas.drawLine(0, 10, 100, 10, paint);
+//        paint.setStrokeCap(Paint.Cap.BUTT);
+        paint.setStrokeJoin(Paint.Join.MITER);
+        canvas.drawLine(0, 0, 100, 0, paint);
+        canvas.drawLine(100, 0, 100, -100, paint);
+
 
         paint.setStrokeCap(Paint.Cap.SQUARE);
-        canvas.drawLine(0, 210, 100, 210, paint);
+        canvas.drawLine(0, 200, 100, 200, paint);
 
 //        paint.setStrokeCap(Paint.Cap.ROUND);
 

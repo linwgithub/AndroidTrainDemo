@@ -6,37 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg_main_activity"
     android:orientation="vertical"
-    android:paddingTop="25dp"
     tools:context="com.linwei.traindemo.MainActivity">
-
-    <TextView
-        android:id="@+id/tv_main"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/btn_main"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="开始动画" />
-
-    <com.linwei.traindemo.widget.AnimateProcessView
-        android:id="@+id/view_process"
-        android:layout_width="match_parent"
-        android:layout_height="32dp"
-        android:layout_marginLeft="32dp"
-        android:layout_marginRight="32dp"
-        app:process="0.6"
-        app:isAnimete="false"
-        app:isShowProcessText="false"
-        app:animatrDuration="0"
-        app:processTextColor="@color/colorAccent"
-        app:processSrc="@drawable/bule_bar" />
 
     <com.linwei.traindemo.cusview.TrainPatin
         android:layout_width="match_parent"
